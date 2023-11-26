@@ -1,108 +1,105 @@
 /*************************************************************
- * Robo Seguidor de Linha com braco acoplado
+ * Line Follower Robot with Attached Arm
  * 
- * O robo ira andar sempre sobre a linha, 
- * caso ele saia da pista, ele se mantera parado.
- * caso a esp receba o dado do sensor de carga/descarga, ele se mantem parado por um tempo
- * neste ultimo caso, o braço robotico deve funcionar durante o tempo com o carro parado
+ * The robot will always move on the line. If it goes off the track, it will remain stationary.
+ * If the 'esp' receives data from the load/unload sensor, it will remain stationary for a while.
+ * In the latter case, the robotic arm should function while the car is stationary.
 *************************************************************/
 
-//adiciona a biblioteca de controle de motores ao codigo
+// Include the motor control library into the code
 #include <RoboCore_Vespa.h>
 
-VespaMotors motores;
+VespaMotors motors;
 
 /*************************************************************
- * Variaveis do carro seguidor de linha
+ * Variables for the line-following car
 *************************************************************/
 
-#define SENSOR_ESQUERDO 36
-#define SENSOR_DIREITO 39
+#define LEFT_SENSOR 36
+#define RIGHT_SENSOR 39
 
-int leitura_esquerdo = 0; //leituras dos sensores de linha
-int leitura_direito = 0;
+int left_reading = 0; // Readings from line sensors
+int right_reading = 0;
 
-#define VALOR_CORTE 3000  //valor de corte para as leituras dos sensores
-#define VELOCIDADE 70     //velocidade em linha reta do robo
-#define VELOCIDADE_SOMA 30 //valor somado a velocidade de rotacao dos motores
-#define VELOCIDADE_SUBTRACAO 50 //valor subtraido da valocidade de rotacao dos motores
-#define CONTAGEM_MAXIMA 10000 //valor maximo de contagem de parada
-int contador_parada = 0; //contador para parar o robo caso ele fuja da pista
+#define CUTOFF_VALUE 3000  // Cutoff value for sensor readings
+#define SPEED 70     // Straight-line speed of the robot
+#define SPEED_ADDITION 30 // Value added to the motor rotation speed
+#define SPEED_SUBTRACTION 50 // Value subtracted from the motor rotation speed
+#define MAX_STOP_COUNT 10000 // Maximum stop count value
+int stop_counter = 0; // Counter to stop the robot if it deviates from the track
 
 /*************************************************************
- * Variaveis do posionamento do carro
+ * Variables for the car's positioning
 *************************************************************/
 
-int leitura_carga = 0; //leituras dos sensores das entradas dos setores de carga e descarga
-int leitura_desgarga = 0;
+int load_reading = 0; // Readings from load and unload sensors
 
 /*************************************************************
- * Variaveis do braco robotico
+ * Variables for the robotic arm
 *************************************************************/
-
 
 void setup() {
    
-  pinMode(SENSOR_ESQUERDO, INPUT);
-  pinMode(SENSOR_DIREITO, INPUT);
+  pinMode(LEFT_SENSOR, INPUT);
+  pinMode(RIGHT_SENSOR, INPUT);
 
 }
 
 void loop() {
 
-  //realiza a leitura dos sensores de linha
-  leitura_esquerdo = analogRead(SENSOR_ESQUERDO);
-  leitura_direito = analogRead(SENSOR_DIREITO);
-  //realiza a leitura dos sensores de posicionamento
-  //leitura_carga = info de outra esp no setor de carga
-  //leitura_descarga = info de outra esp no setor de descarga
+  // Read line sensors
+  left_reading = analogRead(LEFT_SENSOR);
+  right_reading = analogRead(RIGHT_SENSOR);
+  // Read positioning sensors
+  // load_reading = information from another 'esp' in the load sector
+  // unload_reading = information from another 'esp' in the unload sector
 
-  //if(leitura_carga =! 0) {motores.stop(); Arm(ArmState::CARGA));}
-  //else if(leitura_descarga =! 0) {motores.stop(); braco(ArmState::DESCARGA));}
+  // if(load_reading != 0) {motors.stop(); Arm(ArmState::LOAD));}
+  // else if(unload_reading != 0) {motors.stop(); Arm(ArmState::UNLOAD));}
 
-  if((leitura_esquerdo > VALOR_CORTE) && (leitura_direito > VALOR_CORTE)) {
-    //movimenta o robo para frente
-    motores.forward(VELOCIDADE);
-    contador_parada = 0; //zera o contador de parada
+  if((left_reading > CUTOFF_VALUE) && (right_reading > CUTOFF_VALUE)) {
+    // Move the robot forward
+    motors.forward(SPEED);
+    stop_counter = 0; // Reset stop counter
   }
-  else if((leitura_esquerdo < VALOR_CORTE) && (leitura_direito < VALOR_CORTE)){
-    contador_parada++; //incrementa o contador de parada
+  else if((left_reading < CUTOFF_VALUE) && (right_reading < CUTOFF_VALUE)){
+    stop_counter++; // Increment stop counter
   }
-  else if(leitura_direito > VALOR_CORTE) {
-    //gira o robo para a esquerda ajustando a velocidade dos motores
-    motores.turn(VELOCIDADE+VELOCIDADE_SOMA, VELOCIDADE-VELOCIDADE_SUBTRACAO);
-    contador_parada = 0; //zera o contador de parada
+  else if(right_reading > CUTOFF_VALUE) {
+    // Rotate the robot left by adjusting motor speeds
+    motors.turn(SPEED+SPEED_ADDITION, SPEED-SPEED_SUBTRACTION);
+    stop_counter = 0; // Reset stop counter
   }
-  else if(leitura_esquerdo > VALOR_CORTE) {
-    //gira o robo para a direita ajustando a velocidade dos motores
-    motores.turn(VELOCIDADE-VELOCIDADE_SUBTRACAO, VELOCIDADE+VELOCIDADE_SOMA);
-    contador_parada = 0; //zera o contador de parada
+  else if(left_reading > CUTOFF_VALUE) {
+    // Rotate the robot right by adjusting motor speeds
+    motors.turn(SPEED-SPEED_SUBTRACTION, SPEED+SPEED_ADDITION);
+    stop_counter = 0; // Reset stop counter
   }
   
-  if(contador_parada >= CONTAGEM_MAXIMA){
-    motores.stop(); //para o robo
-    contador_parada = CONTAGEM_MAXIMA; //fixa a contagem de parada
+  if(stop_counter >= MAX_STOP_COUNT){
+    motors.stop(); // Stop the robot
+    stop_counter = MAX_STOP_COUNT; // Set stop count
   }
 
-  //realiza um tempo de espera na execucao do codigo
-  delay(0); //alterar esse valor diminui a sensibilidade do robo
+  // Delay execution to control the code sensitivity
+  delay(0); // Lowering this value decreases the robot's sensitivity
   
 }
 
 enum class ArmState {
-  CARGA,
-  DESCARGA
+  LOAD,
+  UNLOAD
 };
 
-//definir funcao do braco que recebe a entrada "carga" ou "descarga"
+// Define arm function that receives the input 'load' or 'unload'
 void Arm(ArmState state){
   switch (state) {
-    case ArmState::CARGA: {
-      
+    case ArmState::LOAD: {
+      // Functionality for load state
       break;
     }
-    case ArmState::DESCARGA: {
-      
+    case ArmState::UNLOAD: {
+      // Functionality for unload state
       break;
     }
   }
