@@ -23,9 +23,9 @@ int leitura_esquerdo = 0; //leituras dos sensores de linha
 int leitura_direito = 0;
 
 #define VALOR_CORTE 3000  //valor de corte para as leituras dos sensores
-#define VELOCIDADE 70     //velocidade em linha reta do robo
-#define VELOCIDADE_SOMA 30 //valor somado a velocidade de rotacao dos motores
-#define VELOCIDADE_SUBTRACAO 50 //valor subtraido da valocidade de rotacao dos motores
+#define VELOCIDADE 90     //velocidade em linha reta do robo
+#define VELOCIDADE_SOMA 10 //valor somado a velocidade de rotacao dos motores
+#define VELOCIDADE_SUBTRACAO 60 //valor subtraido da valocidade de rotacao dos motores
 #define CONTAGEM_MAXIMA 10000 //valor maximo de contagem de parada
 int contador_parada = 0; //contador para parar o robo caso ele fuja da pista
 

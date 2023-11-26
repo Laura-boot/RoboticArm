@@ -5,6 +5,8 @@
 
 //adiciona a biblioteca de controle dos motores ao codigo
 #include <RoboCore_Vespa.h>
+#include "FS.h"
+#include <WiFi.h>
 
 //configura o objeto "motores" a partir da biblioteca
 VespaMotors motores;
