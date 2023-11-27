@@ -10,6 +10,7 @@
 
 //adiciona a biblioteca de controle de motores ao codigo
 #include <RoboCore_Vespa.h>
+#include "FS.h"
 
 //declaracao do objeto "motores"
 VespaMotors motores;
@@ -25,18 +26,18 @@ int leitura_direito = 0;
 //declaracao da variavel que armazena o valor de corte para as leituras dos sensores
 const int VALOR_CORTE = 3000;
 //declaracao da variavel que armazena a velocidade em linha reta do robo
-const int VELOCIDADE = 70; 
+const int VELOCIDADE = 90; 
 //declaracao da variavel que armazena o valor que sera somado a velocidade de rotacao dos motores
-const int VELOCIDADE_SOMA = 30;
+const int VELOCIDADE_SOMA = 10;
 //declaracao da variavel que armazena o valor que sera subtraido da valocidade de rotacao dos motores
-const int VELOCIDADE_SUBTRACAO = 50;
+const int VELOCIDADE_SUBTRACAO = 70;
 //declaracao da variavel que armazena o valor maximo de contagem de parada
 const int CONTAGEM_MAXIMA = 10000;
 //declaracao da variavel do contador para parar o robo caso ele fuja da pista
 int contador_parada = 0;
 
 void setup() {
-
+  Serial.begin(9600);
   //configuracao dos pinos conectados aos sensores como entrada  
   pinMode(SENSOR_ESQUERDO, INPUT);
   pinMode(SENSOR_DIREITO, INPUT);
@@ -54,6 +55,7 @@ void loop() {
   if((leitura_esquerdo > VALOR_CORTE) && (leitura_direito > VALOR_CORTE)) { //se for verdadeiro
     //movimenta o robo para frente
     motores.forward(VELOCIDADE);
+    Serial.println("frente");
     contador_parada = 0; //zera o contador de parada
   }
 
@@ -68,6 +70,7 @@ void loop() {
   else if(leitura_direito > VALOR_CORTE) { //se for verdadeiro
     //gira o robo para a esquerda ajustando a velocidade dos motores
     motores.turn(VELOCIDADE+VELOCIDADE_SOMA, VELOCIDADE-VELOCIDADE_SUBTRACAO);
+    Serial.println("esquerda");
     contador_parada = 0; //zera o contador de parada
   }
 
@@ -76,6 +79,7 @@ void loop() {
   else if(leitura_esquerdo > VALOR_CORTE) {
     //gira o robo para a direita ajustando a velocidade dos motores
     motores.turn(VELOCIDADE-VELOCIDADE_SUBTRACAO, VELOCIDADE+VELOCIDADE_SOMA);
+    Serial.println("direita");
     contador_parada = 0; //zera o contador de parada
   }
 
@@ -83,6 +87,7 @@ void loop() {
   //ou seja se o robo ficou muito tempo fora da pista
   if(contador_parada >= CONTAGEM_MAXIMA){ //se for verdadeiro
     motores.stop(); //para o robo
+    Serial.println("parado");
     contador_parada = CONTAGEM_MAXIMA; //fixa a contagem de parada
   }
 

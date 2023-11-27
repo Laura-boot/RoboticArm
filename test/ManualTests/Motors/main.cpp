@@ -20,18 +20,19 @@ void loop() { //acoes que serao executadas infinitamente
 
   //aciona os dois motores para frente com velocidade maxima
   motores.forward(100);
-  delay(INTERVALO); //mantem os motores girando pelo tempo determinado
+  delay(3000); //mantem os motores girando pelo tempo determinado
   motores.stop(); //para os motores para a nova acao
 
   //aciona o motor da esquerda com 90% da velocidade maxima e o motor da direita com 30%,
   //girando o robo para a direita
-  motores.turn(90,30);
-  delay(INTERVALO); //mantem os motores girando pelo tempo determinado
+  motores.turn(100,0);
+  delay(2000); //mantem os motores girando pelo tempo determinado
   motores.stop(); //para os motores para a nova acao
   
+  /*
   //aciona o motor da esquerda com 30% da velocidade maxima e o motor da direita com 90%,
   //girando o robo para a esquerda
-  motores.turn(30,90);
+  motores.turn(70,90);
   delay(INTERVALO); //mantem os motores girando pelo tempo determinado
   motores.stop(); //para os motores para a nova acao
 
@@ -42,14 +43,14 @@ void loop() { //acoes que serao executadas infinitamente
 
   //aciona o motor da esquerda com 30% da velocidade maxima e o motor da direita com 90%,
   //girando o robo para a esquerda
-  motores.turn(30,90);
+  motores.turn(70,90);
   delay(INTERVALO); //mantem os motores girando pelo tempo determinado
   motores.stop(); //para os motores para a nova acao;
 
   //aciona o motor da esquerda com 90% da velocidade maxima e o motor da direita com 30%,
   //girando o robo para a direita
-  motores.turn(90,30);
+  motores.turn(90,70);
   delay(INTERVALO); //mantem os motores girando pelo tempo determinado
   motores.stop(); //para os motores para a nova acao
-
+  */
 }

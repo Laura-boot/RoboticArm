@@ -42,7 +42,7 @@ int leitura_desgarga = 0;
 
 
 void setup() {
-   
+  
   pinMode(SENSOR_ESQUERDO, INPUT);
   pinMode(SENSOR_DIREITO, INPUT);
 

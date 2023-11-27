@@ -19,7 +19,7 @@
 #include <AsyncTCP.h> // https://github.com/me-no-dev/AsyncTCP
 #include <ESPAsyncWebServer.h> // https://github.com/me-no-dev/ESPAsyncWebServer
 #include <ArduinoJson.h> // https://arduinojson.org/
-
+#include "FS.h"
 #include <RoboCore_Vespa.h>
 
 // --------------------------------------------------
