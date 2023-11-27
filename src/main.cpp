@@ -22,9 +22,9 @@ int left_reading = 0; // Readings from line sensors
 int right_reading = 0;
 
 #define CUTOFF_VALUE 3000  // Cutoff value for sensor readings
-#define SPEED 70     // Straight-line speed of the robot
-#define SPEED_ADDITION 30 // Value added to the motor rotation speed
-#define SPEED_SUBTRACTION 50 // Value subtracted from the motor rotation speed
+#define SPEED 90     // Straight-line speed of the robot
+#define SPEED_ADDITION 10 // Value added to the motor rotation speed
+#define SPEED_SUBTRACTION 70 // Value subtracted from the motor rotation speed
 #define MAX_STOP_COUNT 10000 // Maximum stop count value
 int stop_counter = 0; // Counter to stop the robot if it deviates from the track
 
