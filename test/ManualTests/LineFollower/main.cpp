@@ -26,9 +26,9 @@ int leitura_direito = 0;
 //declaracao da variavel que armazena o valor de corte para as leituras dos sensores
 const int VALOR_CORTE = 3000;
 //declaracao da variavel que armazena a velocidade em linha reta do robo
-const int VELOCIDADE = 90; 
+const int VELOCIDADE = 100; 
 //declaracao da variavel que armazena o valor que sera somado a velocidade de rotacao dos motores
-const int VELOCIDADE_SOMA = 10;
+const int VELOCIDADE_SOMA = 0;
 //declaracao da variavel que armazena o valor que sera subtraido da valocidade de rotacao dos motores
 const int VELOCIDADE_SUBTRACAO = 70;
 //declaracao da variavel que armazena o valor maximo de contagem de parada
@@ -55,7 +55,7 @@ void loop() {
   if((leitura_esquerdo > VALOR_CORTE) && (leitura_direito > VALOR_CORTE)) { //se for verdadeiro
     //movimenta o robo para frente
     motores.forward(VELOCIDADE);
-    Serial.println("frente");
+    //Serial.println("frente");
     contador_parada = 0; //zera o contador de parada
   }
 
@@ -70,7 +70,7 @@ void loop() {
   else if(leitura_direito > VALOR_CORTE) { //se for verdadeiro
     //gira o robo para a esquerda ajustando a velocidade dos motores
     motores.turn(VELOCIDADE+VELOCIDADE_SOMA, VELOCIDADE-VELOCIDADE_SUBTRACAO);
-    Serial.println("esquerda");
+    //Serial.println("esquerda");
     contador_parada = 0; //zera o contador de parada
   }
 
@@ -79,7 +79,7 @@ void loop() {
   else if(leitura_esquerdo > VALOR_CORTE) {
     //gira o robo para a direita ajustando a velocidade dos motores
     motores.turn(VELOCIDADE-VELOCIDADE_SUBTRACAO, VELOCIDADE+VELOCIDADE_SOMA);
-    Serial.println("direita");
+    //Serial.println("direita");
     contador_parada = 0; //zera o contador de parada
   }
 
